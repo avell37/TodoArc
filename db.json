@@ -1,0 +1,31 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "dododo222@gmail.com",
+      "username": "avell37",
+      "password": "123456",
+      "repeatPassword": "123456",
+      "todos": [
+        {
+          "title": "cfghcfghcfgh",
+          "body": "cfghcfghcf",
+          "id": 34634623513,
+          "date": "11.08.2024"
+        },
+        {
+          "title": "xdfgxdfg",
+          "body": "cfgjcfgj",
+          "id": 346346235133,
+          "date": "11.01.2025"
+        },
+        {
+          "title": "xdfgxdfg",
+          "body": "cfgjcfgj",
+          "id": 346346235133,
+          "date": "04.01.2025"
+        }
+      ]
+    }
+  ]
+}
