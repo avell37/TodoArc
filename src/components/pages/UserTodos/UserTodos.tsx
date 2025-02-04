@@ -1,22 +1,18 @@
 import { Header } from "../../organisms/Header"
 import { AddTodo } from "../../molecules/AddTodo"
 import { TodoLayout } from "../../organisms/TodoLayout"
-import { getUsers } from "../../../api"
-import { useCallback } from "react"
 import { Footer } from "../../organisms/Footer"
+import { fetchUser } from "../../../store/userSlice/userSlice"
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
 
 export const UserTodos: React.FC = () => {
 
-    const fetchUsers = useCallback(async () => {
-        try {
-            const response = await getUsers();
-            console.log(response)
-        } catch (err) {
-            console.error(err);
-        }
-    }, [])
+    const dispatch = useDispatch();
 
-    fetchUsers();
+    useEffect(() => {
+        dispatch(fetchUser())
+    }, [])
 
     return (
         <div className="flex flex-col justify-between h-screen">

@@ -1,6 +1,7 @@
 import { GithubLogo } from "../../assets/GithubLogo"
 import { TelegramLogo } from "../../assets/TelegramLogo"
 import { P } from "../atoms/P"
+import { Link } from "react-router-dom"
 
 export const Footer: React.FC = () => {
     return (
@@ -9,8 +10,12 @@ export const Footer: React.FC = () => {
                 text="made by avell37"
                 className="text-white" />
             <div className="flex gap-[10px]">
-                <GithubLogo />
-                <TelegramLogo />
+                <Link to="https://github.com/avell37" target="_blank">
+                    <GithubLogo />
+                </Link>
+                <Link to="https://t.me/avell37" target="_blank">
+                    <TelegramLogo />
+                </Link>
             </div>
         </div>
     )

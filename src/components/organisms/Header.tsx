@@ -20,18 +20,18 @@ export const Header: React.FC = () => {
                                 <ProfileIcon
                                     width={25}
                                     height={25} />
-                                <Link to="/account" className="text-white max-sm:test-xs transition duration-200 hover:text-[#cdcdcd]">Profile</Link>
+                                <Link to="/account" className="text-white max-sm:test-xs transition duration-200 hover:text-[#cdcdcd]">Профиль</Link>
                             </div>
                             <div className="flex gap-[10px] cursor-pointer">
                                 <ClipboardIcon
                                     width={25}
                                     height={25}
                                     fill="#fff" />
-                                <Link to="/todos" className="text-white max-sm:test-xs transition duration-200 hover:text-[#cdcdcd]">Your todos</Link>
+                                <Link to="/todos" className="text-white max-sm:test-xs transition duration-200 hover:text-[#cdcdcd]">Ваши цели</Link>
                             </div>
                             <div className="flex gap-[10px] cursor-pointer">
                                 <ExitIcon />
-                                <div className="text-white max-sm:test-xs transition duration-200 hover:text-[#cdcdcd]">Exit</div>
+                                <div className="text-white max-sm:test-xs transition duration-200 hover:text-[#cdcdcd]">Выход</div>
                             </div>
                         </div>
                     </section>
