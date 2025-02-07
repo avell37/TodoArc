@@ -11,19 +11,22 @@
           "title": "cfghcfghcfgh",
           "body": "cfghcfghcf",
           "id": 34634623513,
-          "date": "11.08.2024"
+          "date": "11.08.2024",
+          "completed": true
         },
         {
           "title": "xdfgxdfg",
           "body": "cfgjcfgj",
           "id": 346346235133,
-          "date": "11.01.2025"
+          "date": "11.01.2025",
+          "completed": false
         },
         {
           "title": "xdfgxdfg",
           "body": "cfgjcfgj",
           "id": 346346235133,
-          "date": "04.01.2025"
+          "date": "04.01.2025",
+          "completed": true
         }
       ]
     }

@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 export const AppRoutes: React.FC = () => {
 
-    const isAuth: boolean = true;
+    const isAuth: boolean = false;
 
     return isAuth ? (
         <Routes>
