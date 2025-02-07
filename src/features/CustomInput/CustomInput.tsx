@@ -1,8 +1,9 @@
 import { useField } from "formik";
 import { IInput } from "../../models/IInput";
 
-export const CustomInput: React.FC<IInput> = ({ ...props }) => {
-    const [field, meta] = useField(props);
+export const CustomInput: React.FC<IInput> = ({ name, ...props }) => {
+    const [field, meta] = useField(name);
+
     return (
         <>
             <input {...props} {...field}

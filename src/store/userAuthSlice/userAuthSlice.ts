@@ -6,7 +6,10 @@ export const fetchUser = createAsyncThunk(
     'users/fetchUsers',
     async () => {
         const res = await getUsers()
-        return res.data
+        if (res?.data) {
+            return res.data
+        }
+        return [];
     }
 )
 
@@ -20,9 +23,7 @@ const userAuthSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        findUser: (state, action) => {
-            state.users.find((user) => user.username === action.payload)
-        }
+
     },
     extraReducers: (builder) => {
         builder
@@ -39,8 +40,4 @@ const userAuthSlice = createSlice({
     }
 })
 
-const { actions, reducer } = userAuthSlice;
-
 export const userReducer = userAuthSlice.reducer;
-
-export const {findUser} = actions;

@@ -5,17 +5,8 @@ import { TodoArcLogo } from "../../../assets/TodoArcLogo"
 import { Formik, Form } from "formik"
 import { LoginValidationSchema } from "../../../features/ValidationSchema/ValidationSchema"
 import { Link } from "react-router-dom"
-import { fetchUser, findUser } from "../../../store/userAuthSlice/userAuthSlice"
-import { useEffect } from "react"
-import { useDispatch } from "react-redux"
 
 export const Login: React.FC = () => {
-
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        dispatch(fetchUser())
-    }, [])
 
     return (
         <Formik
@@ -29,7 +20,6 @@ export const Login: React.FC = () => {
                     username: values.username,
                     password: values.password
                 }
-                findUser(user.username)
                 console.log(user)
                 resetForm()
             }}
