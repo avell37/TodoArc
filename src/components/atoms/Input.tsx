@@ -9,7 +9,7 @@ interface IProps {
     disabled?: boolean,
 }
 
-export const Input: React.FC<IProps> = ({ name, type, placeholder, value, className, required }) => {
+export const Input: React.FC<IProps> = ({ name, type, placeholder, value, className, required, onChange }) => {
     return (
         <input
             name={name}
@@ -17,6 +17,7 @@ export const Input: React.FC<IProps> = ({ name, type, placeholder, value, classN
             placeholder={placeholder}
             value={value}
             className={className}
-            required={required} />
+            required={required}
+            onChange={onChange} />
     )
 }

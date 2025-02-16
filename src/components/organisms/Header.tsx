@@ -3,8 +3,20 @@ import { ProfileIcon } from "../../assets/ProfileIcon"
 import { ClipboardIcon } from "../../assets/ClipboardIcon"
 import { ExitIcon } from "../../assets/ExitIcon"
 import { Link } from "react-router-dom"
+import { useAppDispatch } from "../../hooks/useAppDispatch"
+import { logoutUser } from "../../store/reducers/userAuthSlice/userAuthSlice"
+import { useNavigate } from "react-router-dom"
 
 export const Header: React.FC = () => {
+
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const logoutAccount = () => {
+        dispatch(logoutUser());
+        navigate("/");
+    }
+
     return (
         <div className="mb-[250px] w-full">
             <div className='absolute top-0 left-0 w-full h-[210px] bg-[#0D0D0D]'>
@@ -29,10 +41,12 @@ export const Header: React.FC = () => {
                                     fill="#fff" />
                                 <Link to="/todos" className="text-white max-sm:test-xs transition duration-200 hover:text-[#cdcdcd]">Ваши цели</Link>
                             </div>
-                            <div className="flex gap-[10px] cursor-pointer">
+                            <button
+                            onClick={logoutAccount}
+                            className="flex gap-[10px] cursor-pointer">
                                 <ExitIcon />
                                 <div className="text-white max-sm:test-xs transition duration-200 hover:text-[#cdcdcd]">Выход</div>
-                            </div>
+                            </button>
                         </div>
                     </section>
                 </div>

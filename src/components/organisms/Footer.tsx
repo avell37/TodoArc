@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 
 export const Footer: React.FC = () => {
     return (
-        <div className="flex flex-col justify-end items-center pt-[10px] pb-[10px] bg-[#0D0D0D] gap-[10px]">
+        <div className="relative bottom-0 w-full flex flex-col justify-end items-center pt-[10px] pb-[10px] bg-[#0D0D0D] gap-[10px]">
             <P
                 text="made by avell37"
                 className="text-white" />

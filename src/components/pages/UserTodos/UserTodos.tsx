@@ -3,12 +3,12 @@ import { AddTodo } from "../../molecules/AddTodo"
 import { TodoLayout } from "../../organisms/TodoLayout"
 import { Footer } from "../../organisms/Footer"
 
-export const UserTodos: React.FC = () => {
+export const UserTodos: React.FC = () => {   
 
     return (
-        <div className="flex flex-col justify-between h-screen">
+        <div className="relative flex flex-col min-h-screen">
             <Header />
-            <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-1 flex-col justify-start items-center">
                 <AddTodo />
                 <TodoLayout />
             </div>

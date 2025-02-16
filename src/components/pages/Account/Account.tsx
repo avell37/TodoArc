@@ -14,9 +14,9 @@ export const Account: React.FC = () => {
                         className="max-w-[200px] w-full" />
                     <div className="flex flex-col mt-[20px] ml-[30px] gap-[20px] w-full">
                         <h1 className="text-white font-bold">Ваш аккаунт</h1>
-                        <p className="text-white">Ваше имя: BABA YAGA</p>
-                        <p className="text-white">Ваша почта: HOE.BABA.YAGA@gmail.com</p>
-                        <p className="text-white">Количество задач: I GOT SIX SIX SIX</p>
+                        <p className="text-white">Ваше имя: test</p>
+                        <p className="text-white">Ваша почта: test@gmail.com</p>
+                        <p className="text-white">Количество задач: 132</p>
                     </div>
                 </div>
             </div>

@@ -4,9 +4,30 @@ import { P } from "../../atoms/P"
 import { TodoArcLogo } from "../../../assets/TodoArcLogo"
 import { Formik, Form } from "formik"
 import { LoginValidationSchema } from "../../../features/ValidationSchema/ValidationSchema"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { authUser, fetchUser } from "../../../store/reducers/userAuthSlice/userAuthSlice"
+import { useSelector } from "react-redux"
+import { useEffect } from "react"
+import Cookies from 'js-cookie'
+import { useAppDispatch } from "../../../hooks/useAppDispatch"
 
 export const Login: React.FC = () => {
+
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const isAuth = useSelector((state) => state.userReducer.isAuth || false)
+
+    useEffect(() => {
+        dispatch(fetchUser());
+    }, [dispatch]);
+    
+    useEffect(() => {
+        const isAuthCookie = Cookies.get("isAuth") === "true";
+    
+        if (isAuth || isAuthCookie) {
+            navigate('/todos');
+        }
+    }, [isAuth, navigate]);
 
     return (
         <Formik
@@ -20,10 +41,9 @@ export const Login: React.FC = () => {
                     username: values.username,
                     password: values.password
                 }
-                console.log(user)
+                dispatch(authUser(user))
                 resetForm()
-            }}
-        >
+            }}>
             {({ handleSubmit }) => (
                 <div className="flex justify-center items-center h-screen">
                     <Form

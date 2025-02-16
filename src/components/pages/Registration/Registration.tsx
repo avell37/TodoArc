@@ -6,8 +6,28 @@ import { Formik } from 'formik';
 import { RegValidationSchema } from "../../../features/ValidationSchema/ValidationSchema";
 import { Link } from "react-router-dom"
 import { nanoid } from "nanoid";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../../hooks/useAppDispatch";
+import { createUser } from '../../../api/userApi'
+import { regUser } from "../../../store/reducers/userAuthSlice/userAuthSlice";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Cookies from 'js-cookie'
 
 export const Registration: React.FC = () => {
+
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const isAuth = useSelector((state) => state.userReducer.isAuth || false)
+
+    useEffect(() => {
+        const isAuthCookie = Cookies.get("isAuth") === "true";
+    
+        if (isAuth || isAuthCookie) {
+            navigate('/todos');
+        }
+    }, [isAuth, navigate]);
+
     return (
         <div className="flex justify-center items-center h-screen">
             <Formik
@@ -18,16 +38,22 @@ export const Registration: React.FC = () => {
                     repeatPassword: '',
                 }}
                 validationSchema={RegValidationSchema}
-                onSubmit={(values, { resetForm }) => {
+                onSubmit={ async (values, { resetForm }) => {
                     const user = {
                         id: nanoid(),
                         email: values.email,
                         username: values.username,
                         password: values.password,
-                        repeatPassword: values.repeatPassword
+                        repeatPassword: values.repeatPassword,
+                        todos: []
                     }
-                    console.log(user)
-                    resetForm();
+                        try {
+                            await createUser(user)
+                            dispatch(regUser(user))
+                            resetForm();
+                        } catch (err) {
+                            console.error(err);
+                        }
                 }}>
                 {({ handleSubmit }) => (
                 <form
