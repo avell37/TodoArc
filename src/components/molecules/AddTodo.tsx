@@ -11,7 +11,7 @@ export const AddTodo: React.FC = () => {
     const [value, setValue] = useState('');
     const dispatch = useAppDispatch();
 
-    const createTodo = (e) => {
+    const createTodo = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const newTodo = {

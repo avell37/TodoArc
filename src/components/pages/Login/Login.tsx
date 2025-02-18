@@ -5,20 +5,20 @@ import { TodoArcLogo } from "../../../assets/TodoArcLogo"
 import { Formik, Form } from "formik"
 import { LoginValidationSchema } from "../../../features/ValidationSchema/ValidationSchema"
 import { Link, useNavigate } from "react-router-dom"
-import { authUser, fetchUser } from "../../../store/reducers/userAuthSlice/userAuthSlice"
-import { useSelector } from "react-redux"
+import { authUser, fetchUsers } from "../../../store/reducers/userAuthSlice/userAuthSlice"
 import { useEffect } from "react"
 import Cookies from 'js-cookie'
 import { useAppDispatch } from "../../../hooks/useAppDispatch"
+import { useAppSelector } from "../../../hooks/useAppSelector"
 
 export const Login: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const isAuth = useSelector((state) => state.userReducer.isAuth || false)
+    const isAuth = useAppSelector((state) => state.userReducer.isAuth || false)
 
     useEffect(() => {
-        dispatch(fetchUser());
+        dispatch(fetchUsers());
     }, [dispatch]);
     
     useEffect(() => {

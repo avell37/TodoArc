@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getTodosByUserID } from "../../../api/todosApi";
+import { getUserByUserID } from "../../../api/todosApi";
 import { addUserTodo } from "../../../api/todosApi";
 import Cookies from 'js-cookie';
 
 export const fetchUserTodos = createAsyncThunk(
     'user/todos',
-    async (userID) => {
-        const res = await getTodosByUserID(userID)
+    async (userID: string) => {
+        const res = await getUserByUserID(userID)
         if (res?.todos) {
             return res.todos
         }
@@ -29,7 +29,13 @@ const userTodosSlice = createSlice({
             state.todos.push(action.payload)
         },
         deleteTodo: (state, action) => {
-            
+            state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+        },
+        makeCompleted: (state, action) => {
+            const todo = state.todos.find((todo) => todo.id === action.payload);
+            if (todo) {
+                todo.completed = !todo.completed;
+            }
         }
     },
     extraReducers: (builder) => {
@@ -49,4 +55,4 @@ const userTodosSlice = createSlice({
 
 export const todosReducer = userTodosSlice.reducer;
 
-export const {addTodo} = userTodosSlice.actions;
+export const {addTodo, deleteTodo, makeCompleted} = userTodosSlice.actions;

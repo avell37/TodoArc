@@ -9,7 +9,8 @@ interface IProps {
     disabled?: boolean,
 }
 
-export const Input: React.FC<IProps> = ({ name, type, placeholder, value, className, required, onChange }) => {
+export const Input: React.FC<IProps> = 
+({ name, type, placeholder, value, className, required, onChange }) => {
     return (
         <input
             name={name}

@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { UserAuthState } from "./types";
+import { IUser } from "../../../models/IUser";
 import { getUsers } from "../../../api/userApi";
 import Cookies from "js-cookie";
 
-export const fetchUser = createAsyncThunk(
+export const fetchUsers = createAsyncThunk(
     'users',
     async () => {
         const res = await getUsers()
@@ -17,7 +18,7 @@ export const fetchUser = createAsyncThunk(
 const initialState: UserAuthState = {
     users: [],
     usersLoadingStatus: "idle",
-    isAuth: false
+    isAuth: false,
 }
 
 const userAuthSlice = createSlice({
@@ -26,35 +27,36 @@ const userAuthSlice = createSlice({
     reducers: {
         authUser: (state, action) => {
             const {username, password} = action.payload;
-            const foundUser = state.users.find((user) => user.username === username && user.password === password)
+            const foundUser = state.users.find((user: IUser) => user.username === username && user.password === password)
             if (foundUser) {
-                Cookies.set("isAuth", true)
+                Cookies.set("isAuth", "true")
                 Cookies.set("userID", foundUser.id)
                 state.isAuth = !!foundUser;
             }
         },
         regUser: (state, action) => {
             const {id} = action.payload;
-            Cookies.set('isAuth', true);
+            Cookies.set('isAuth', "true");
             Cookies.set('userID', `${id}`);
             state.users.push(action.payload)
             state.isAuth = true;
         },
         logoutUser: (state) => {
-            Cookies.set('isAuth', false);
+            Cookies.remove('isAuth');
+            Cookies.remove('userID')
             state.isAuth = false;
         }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(fetchUser.pending, (state) => {
+            .addCase(fetchUsers.pending, (state) => {
                 state.usersLoadingStatus = "loading"
             })
-            .addCase(fetchUser.fulfilled, (state, action) => {
+            .addCase(fetchUsers.fulfilled, (state, action) => {
                 state.users = action.payload;
                 state.usersLoadingStatus = "idle"
             })
-            .addCase(fetchUser.rejected, (state) => {
+            .addCase(fetchUsers.rejected, (state) => {
                 state.usersLoadingStatus = "error"
             })
     }

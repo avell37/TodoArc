@@ -1,13 +1,7 @@
-export interface User {
-    id: string,
-    email: string,
-    username: string,
-    password: string,
-    repeatPassword: string,
-}
+import { IUser } from "../../../models/IUser";
 
 export interface UserAuthState {
-    users: User[],
+    users: IUser[],
     usersLoadingStatus: string,
-    isAuth: boolean
+    isAuth: boolean,
 }

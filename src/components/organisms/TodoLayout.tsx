@@ -3,32 +3,37 @@ import { Todo } from "../atoms/Todo"
 import { fetchUserTodos } from "../../store/reducers/userTodosSlice/userTodosSlice";
 import Cookies from 'js-cookie';
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { fetchUser } from "../../store/reducers/userAuthSlice/userAuthSlice";
+import { fetchUsers } from "../../store/reducers/userAuthSlice/userAuthSlice";
 import { Spinner } from "../../assets/Spinner";
 import { Clipboard } from "../molecules/Clipboard";
 import { P } from "../atoms/P";
 import { Error } from "../../assets/Error";
+import { deleteTodo } from "../../store/reducers/userTodosSlice/userTodosSlice";
+import { deleteUserTodo, toggleUserTodoCompleted } from "../../api/todosApi";
+import { makeCompleted } from "../../store/reducers/userTodosSlice/userTodosSlice";
+import { ITodos } from "../../models/ITodos";
 
 export const TodoLayout = () => {
 
+    const userID = Cookies.get("userID") ?? "";
     const dispatch = useAppDispatch();
-    const userTodos = useSelector((state) => state.todosReducer.todos);
-    const todosLoadingStatus = useSelector((state) => state.todosReducer.todosLoadingStatus)
+    const userTodos: ITodos[] = useAppSelector((state) => state.todosReducer.todos);
+    const todosLoadingStatus = useAppSelector((state) => state.todosReducer.todosLoadingStatus)
 
     useEffect(() => {
         const fetchTodos = async () => {
             try {
-                dispatch(fetchUserTodos(Cookies.get("userID")))
-                dispatch(fetchUser());
+                dispatch(fetchUserTodos(userID))
+                dispatch(fetchUsers());
             } catch (err) {
                 console.error(err);
             }
         }
 
         fetchTodos();
-    }, [dispatch])
+    }, [dispatch, userID])
 
     if (todosLoadingStatus === 'loading') {
         return <Spinner />
@@ -41,14 +46,47 @@ export const TodoLayout = () => {
         )
     }
 
-    const renderTodos = (arr) => {
+    const onDelete = (id: string) => {
+        try {
+            deleteUserTodo(userID, id);
+            dispatch(deleteTodo(id));
+        } catch(err) {
+            console.error(err);
+        }
+    }
+
+    const onToggle = async (id: string) => {
+        try {
+            dispatch(makeCompleted(id));
+            const todo = userTodos.find((todo: ITodos) => todo.id === id);
+            if (todo) {
+                await toggleUserTodoCompleted(userID, id);
+            }
+        } catch (err) {
+            console.error(err);
+            dispatch(makeCompleted(id));
+        }
+    }
+
+    const onEdit = async () => {
+        try {
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    const renderTodos = (arr: ITodos[]) => {
         if (arr.length === 0) {
             return <Clipboard />
         }
 
-        return arr.map((todo) => {
+        return arr.map((todo: ITodos) => {
             return (
-                <Todo key={todo.id} {...todo} />
+                <Todo key={todo.id} {...todo} 
+                onDelete={() => onDelete(todo.id)} 
+                onToggle={() => onToggle(todo.id)}
+                />
             )
         })
     }

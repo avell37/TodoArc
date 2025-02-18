@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import { RegValidationSchema } from "../../../features/ValidationSchema/ValidationSchema";
 import { Link } from "react-router-dom"
 import { nanoid } from "nanoid";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../../hooks/useAppSelector";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
 import { createUser } from '../../../api/userApi'
 import { regUser } from "../../../store/reducers/userAuthSlice/userAuthSlice";
@@ -18,7 +18,7 @@ export const Registration: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-    const isAuth = useSelector((state) => state.userReducer.isAuth || false)
+    const isAuth = useAppSelector((state) => state.userReducer.isAuth || false)
 
     useEffect(() => {
         const isAuthCookie = Cookies.get("isAuth") === "true";
