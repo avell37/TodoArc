@@ -4,4 +4,5 @@ export interface UserAuthState {
     users: IUser[],
     usersLoadingStatus: string,
     isAuth: boolean,
+    authError: boolean,
 }

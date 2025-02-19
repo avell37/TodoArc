@@ -19,6 +19,7 @@ const initialState: UserAuthState = {
     users: [],
     usersLoadingStatus: "idle",
     isAuth: false,
+    authError: false,
 }
 
 const userAuthSlice = createSlice({
@@ -32,6 +33,8 @@ const userAuthSlice = createSlice({
                 Cookies.set("isAuth", "true")
                 Cookies.set("userID", foundUser.id)
                 state.isAuth = !!foundUser;
+            } else {
+                state.authError = true;
             }
         },
         regUser: (state, action) => {

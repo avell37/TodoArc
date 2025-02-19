@@ -10,8 +10,8 @@ import { Spinner } from "../../assets/Spinner";
 import { Clipboard } from "../molecules/Clipboard";
 import { P } from "../atoms/P";
 import { Error } from "../../assets/Error";
-import { deleteTodo } from "../../store/reducers/userTodosSlice/userTodosSlice";
-import { deleteUserTodo, toggleUserTodoCompleted } from "../../api/todosApi";
+import { deleteTodo, editTodo } from "../../store/reducers/userTodosSlice/userTodosSlice";
+import { deleteUserTodo, editUserTodo, toggleUserTodoCompleted } from "../../api/todosApi";
 import { makeCompleted } from "../../store/reducers/userTodosSlice/userTodosSlice";
 import { ITodos } from "../../models/ITodos";
 
@@ -20,7 +20,8 @@ export const TodoLayout = () => {
     const userID = Cookies.get("userID") ?? "";
     const dispatch = useAppDispatch();
     const userTodos: ITodos[] = useAppSelector((state) => state.todosReducer.todos);
-    const todosLoadingStatus = useAppSelector((state) => state.todosReducer.todosLoadingStatus)
+    const todosLoadingStatus = useAppSelector((state) => state.todosReducer.todosLoadingStatus);
+    const todoFilter = useAppSelector((state) => state.todosReducer.todosFilter);
 
     useEffect(() => {
         const fetchTodos = async () => {
@@ -57,23 +58,31 @@ export const TodoLayout = () => {
 
     const onToggle = async (id: string) => {
         try {
-            dispatch(makeCompleted(id));
             const todo = userTodos.find((todo: ITodos) => todo.id === id);
             if (todo) {
                 await toggleUserTodoCompleted(userID, id);
+                dispatch(makeCompleted(id));
             }
         } catch (err) {
             console.error(err);
-            dispatch(makeCompleted(id));
         }
     }
 
-    const onEdit = async () => {
+    const onEdit = async (id: string, newTitle: string) => {
         try {
-
+            const todo = userTodos.find((todo: ITodos) => todo.id === id);
+            if (todo) {
+                const updatedTodo = { ...todo, title: newTitle};
+                await editUserTodo(userID, updatedTodo)
+                dispatch(editTodo({id, title: newTitle}))
+            }
         } catch (err) {
             console.error(err);
         }
+    }
+
+    const searchAndFilterTodos = (todoFilter, userData) => {
+
     }
 
     const renderTodos = (arr: ITodos[]) => {
@@ -83,9 +92,12 @@ export const TodoLayout = () => {
 
         return arr.map((todo: ITodos) => {
             return (
-                <Todo key={todo.id} {...todo} 
-                onDelete={() => onDelete(todo.id)} 
+                <Todo 
+                key={todo.id} 
+                {...todo} 
+                onDelete={() => onDelete(todo.id)}
                 onToggle={() => onToggle(todo.id)}
+                onEdit={onEdit}
                 />
             )
         })

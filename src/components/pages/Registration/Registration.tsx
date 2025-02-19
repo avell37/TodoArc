@@ -8,17 +8,19 @@ import { Link } from "react-router-dom"
 import { nanoid } from "nanoid";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
-import { createUser } from '../../../api/userApi'
+import { createUser, getUsers } from '../../../api/userApi'
 import { regUser } from "../../../store/reducers/userAuthSlice/userAuthSlice";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Cookies from 'js-cookie'
+import { IUser } from "../../../models/IUser";
 
 export const Registration: React.FC = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const isAuth = useAppSelector((state) => state.userReducer.isAuth || false)
+    const [error, setError] = useState("");
 
     useEffect(() => {
         const isAuthCookie = Cookies.get("isAuth") === "true";
@@ -48,11 +50,21 @@ export const Registration: React.FC = () => {
                         todos: []
                     }
                         try {
-                            await createUser(user)
-                            dispatch(regUser(user))
-                            resetForm();
+                            const res = await getUsers();
+                            const users = res?.data;
+                            const isUsernameTaken = users.some((user: IUser) => user.username === values.username);
+                            const isEmailTaken = users.some((user: IUser) => user.email === values.email)
+                            if (isUsernameTaken || isEmailTaken) {
+                                setError(isUsernameTaken ? "Этот логин уже занят" : "Эта почта уже занята")
+                            } else {
+                                await createUser(user)
+                                setError("");
+                                dispatch(regUser(user))
+                                resetForm();
+                            }
                         } catch (err) {
                             console.error(err);
+                            setError("Ошибка. Попробуйте еще раз!")
                         }
                 }}>
                 {({ handleSubmit }) => (
@@ -88,6 +100,7 @@ export const Registration: React.FC = () => {
                             placeholder="Повторите пароль"
                             className="text-white bg-gray-500 p-[10px] rounded-md transition duration-200 hover:bg-gray-600"
                         />
+                        {error && <P text={error} className="text-red-500 text-center"/>}
                         <Button
                             type='submit'
                             text='Зарегистрироваться'

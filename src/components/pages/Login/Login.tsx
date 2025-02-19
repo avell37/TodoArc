@@ -16,6 +16,7 @@ export const Login: React.FC = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const isAuth = useAppSelector((state) => state.userReducer.isAuth || false)
+    const authError = useAppSelector((state) => state.userReducer.authError);
 
     useEffect(() => {
         dispatch(fetchUsers());
@@ -55,7 +56,7 @@ export const Login: React.FC = () => {
                             viewBox="50 150 420 220"
                         />
                         <h1 className="text-white text-xl font-semibold mt-[10px]">Вход</h1>
-                        <div className="relative flex flex-col gap-[13px] max-h-[250px] h-full">
+                        <div className="relative flex flex-col items-center gap-[13px] min-h-[150px] h-full">
                             <CustomInput
                                 name="username"
                                 type="text"
@@ -68,6 +69,7 @@ export const Login: React.FC = () => {
                                 placeholder="Пароль"
                                 className="text-white bg-gray-500 p-[10px] rounded-md transition duration-200 hover:bg-gray-600"
                             />
+                            {authError ? <P text="Неправильный логин или пароль" className="text-red-500 max-w-[200px]" /> : null}
                             <Button
                                 type="submit"
                                 text="Войти"

@@ -5,12 +5,15 @@ interface IProps {
     value?: string,
     className?: string,
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
+    onBlur?: () => void,
+    onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void,
+    autoFocus?: boolean,
     required?: boolean,
     disabled?: boolean,
 }
 
 export const Input: React.FC<IProps> = 
-({ name, type, placeholder, value, className, required, onChange }) => {
+({ name, type, placeholder, value, className, required, onChange, onKeyDown }) => {
     return (
         <input
             name={name}
@@ -19,6 +22,7 @@ export const Input: React.FC<IProps> =
             value={value}
             className={className}
             required={required}
-            onChange={onChange} />
+            onChange={onChange}
+            onKeyDown={onKeyDown} />
     )
 }

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getUserByUserID } from "../../../api/todosApi";
 import { addUserTodo } from "../../../api/todosApi";
 import Cookies from 'js-cookie';
+import { ITodos } from "../../../models/ITodos";
 
 export const fetchUserTodos = createAsyncThunk(
     'user/todos',
@@ -14,9 +15,16 @@ export const fetchUserTodos = createAsyncThunk(
     }
 )
 
-const initialState = {
+interface IState {
     todos: [],
-    todosLoadingStatus: 'idle'
+    todosLoadingStatus: string,
+    todosFilter: string | null,
+}
+
+const initialState: IState = {
+    todos: [],
+    todosLoadingStatus: 'idle',
+    todosFilter: null
 }
 
 const userTodosSlice = createSlice({
@@ -29,13 +37,23 @@ const userTodosSlice = createSlice({
             state.todos.push(action.payload)
         },
         deleteTodo: (state, action) => {
-            state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+            state.todos = state.todos.filter((todo: ITodos) => todo.id !== action.payload);
         },
         makeCompleted: (state, action) => {
-            const todo = state.todos.find((todo) => todo.id === action.payload);
+            const todo = state.todos.find((todo: ITodos) => todo.id === action.payload);
             if (todo) {
                 todo.completed = !todo.completed;
             }
+        },
+        editTodo: (state, action) => {
+            const {id, title} = action.payload
+            const todo = state.todos.find((todo: ITodos) => todo.id === id);
+            if (todo) {
+                todo.title = title;
+            }
+        },
+        selectTodosFilter: (state, action) => {
+            state.todosFilter = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -55,4 +73,4 @@ const userTodosSlice = createSlice({
 
 export const todosReducer = userTodosSlice.reducer;
 
-export const {addTodo, deleteTodo, makeCompleted} = userTodosSlice.actions;
+export const {addTodo, deleteTodo, makeCompleted, editTodo, selectTodosFilter} = userTodosSlice.actions;

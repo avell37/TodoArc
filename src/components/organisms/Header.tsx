@@ -5,16 +5,13 @@ import { ExitIcon } from "../../assets/ExitIcon"
 import { Link } from "react-router-dom"
 import { useAppDispatch } from "../../hooks/useAppDispatch"
 import { logoutUser } from "../../store/reducers/userAuthSlice/userAuthSlice"
-import { useNavigate } from "react-router-dom"
 
 export const Header: React.FC = () => {
 
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     const logoutAccount = () => {
         dispatch(logoutUser());
-        navigate("/");
     }
 
     return (

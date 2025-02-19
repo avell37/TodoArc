@@ -35,9 +35,9 @@ export const AddTodo: React.FC = () => {
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 placeholder="Введите вашу цель"
-                className="max-w-[780px] w-full text-white bg-gray-400 p-[10px] rounded-md transition duration-200 hover:bg-gray-500" />
+                className="max-w-[700px] w-full text-white bg-gray-400 p-[10px] rounded-md transition duration-200 hover:bg-gray-500" />
             <Button
-                className="max-w-[130px] bg-darkblue-400 p-[10px] rounded-md text-white transition duration-200 hover:bg-darkblue-500"
+                className="max-w-[165px] w-full bg-darkblue-400 p-[10px] rounded-md text-white transition duration-200 hover:bg-darkblue-500"
                 text="Создать" />
         </form>
     )
