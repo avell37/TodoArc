@@ -1,12 +1,17 @@
-interface Button {
-    text?: string,
+import { FC } from "react"
+
+interface ButtonProps {
     type?: "submit",
     className?: string,
-    onClick?: () => void;
+    onClick?: () => void,
+    children?: React.ReactNode | string
 }
 
-export const Button: React.FC<Button> = ({ text, className, type }) => {
+export const Button: FC<ButtonProps> = ({ className, type, children, onClick }) => {
     return (
-        <button type={type} className={className}>{text}</button>
+        <button 
+            type={type} 
+            className={className}
+            onClick={onClick}>{children}</button>
     )
 }

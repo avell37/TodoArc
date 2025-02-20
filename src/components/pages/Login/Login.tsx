@@ -1,17 +1,17 @@
+import { useEffect, FC } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { authUser, fetchUsers } from "../../../store/reducers/userAuthSlice/userAuthSlice"
+import Cookies from 'js-cookie'
+import { Formik, Form } from "formik"
+import { useAppDispatch } from "../../../hooks/useAppDispatch"
+import { useAppSelector } from "../../../hooks/useAppSelector"
 import { CustomInput } from "../../../features/CustomInput/CustomInput"
+import { LoginValidationSchema } from "../../../features/ValidationSchema/ValidationSchema"
 import { Button } from "../../atoms/Button"
 import { P } from "../../atoms/P"
 import { TodoArcLogo } from "../../../assets/TodoArcLogo"
-import { Formik, Form } from "formik"
-import { LoginValidationSchema } from "../../../features/ValidationSchema/ValidationSchema"
-import { Link, useNavigate } from "react-router-dom"
-import { authUser, fetchUsers } from "../../../store/reducers/userAuthSlice/userAuthSlice"
-import { useEffect } from "react"
-import Cookies from 'js-cookie'
-import { useAppDispatch } from "../../../hooks/useAppDispatch"
-import { useAppSelector } from "../../../hooks/useAppSelector"
 
-export const Login: React.FC = () => {
+export const Login: FC = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const Login: React.FC = () => {
     useEffect(() => {
         const isAuthCookie = Cookies.get("isAuth") === "true";
     
-        if (isAuth || isAuthCookie) {
+        if (isAuth && isAuthCookie) {
             navigate('/todos');
         }
     }, [isAuth, navigate]);
@@ -72,7 +72,7 @@ export const Login: React.FC = () => {
                             {authError ? <P text="Неправильный логин или пароль" className="text-red-500 max-w-[200px]" /> : null}
                             <Button
                                 type="submit"
-                                text="Войти"
+                                children="Войти"
                                 className="bg-darkblue-400 max-w-[243px] w-full h-[40px] rounded-3xl text-white font-semibold transition duration-200 hover:bg-darkblue-500"
                             />
                         </div>

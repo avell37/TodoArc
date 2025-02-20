@@ -1,76 +1,81 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getUserByUserID } from "../../../api/todosApi";
 import { addUserTodo } from "../../../api/todosApi";
 import Cookies from 'js-cookie';
 import { ITodos } from "../../../models/ITodos";
+import { IState } from "./types";
 
-export const fetchUserTodos = createAsyncThunk(
+export const fetchUserTodos = createAsyncThunk<ITodos[], string>(
     'user/todos',
-    async (userID: string) => {
-        const res = await getUserByUserID(userID)
-        if (res?.todos) {
-            return res.todos
-        }
-        return []
+    async (userID) => {
+        const res = await getUserByUserID(userID);
+        return res?.todos || [];
     }
 )
-
-interface IState {
-    todos: [],
-    todosLoadingStatus: string,
-    todosFilter: string | null,
-}
 
 const initialState: IState = {
     todos: [],
     todosLoadingStatus: 'idle',
-    todosFilter: null
+    todosFilter: "",
+    searchValue: ""
 }
 
 const userTodosSlice = createSlice({
     name: 'todos',
     initialState,
     reducers: {
-        addTodo: (state, action) => {
-            const userID = Cookies.get("userID")
-            addUserTodo(userID, action.payload);
-            state.todos.push(action.payload)
+        addTodo: (state, action: PayloadAction<ITodos>) => {
+            const userID = Cookies.get("userID");
+            if (userID) {
+                addUserTodo(userID, action.payload);
+                state.todos.push(action.payload);
+            }
         },
-        deleteTodo: (state, action) => {
-            state.todos = state.todos.filter((todo: ITodos) => todo.id !== action.payload);
+        deleteTodo: (state, action: PayloadAction<string>) => {
+            state.todos = state.todos.filter(todo => todo.id !== action.payload);
         },
-        makeCompleted: (state, action) => {
-            const todo = state.todos.find((todo: ITodos) => todo.id === action.payload);
+        makeCompleted: (state, action: PayloadAction<string>) => {
+            const todo = state.todos.find(todo => todo.id === action.payload);
             if (todo) {
                 todo.completed = !todo.completed;
             }
         },
-        editTodo: (state, action) => {
-            const {id, title} = action.payload
-            const todo = state.todos.find((todo: ITodos) => todo.id === id);
+        editTodo: (state, action: PayloadAction<{ id: string, title: string }>) => {
+            const {id, title} = action.payload;
+            const todo = state.todos.find(todo => todo.id === id);
             if (todo) {
                 todo.title = title;
             }
         },
-        selectTodosFilter: (state, action) => {
-            state.todosFilter = action.payload
+        selectTodosFilter: (state, action: PayloadAction<string>) => {
+            state.todosFilter = action.payload;
+        },
+        setSearchQuery: (state, action: PayloadAction<string>) => {
+            state.searchValue = action.payload;
         }
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchUserTodos.pending, (state) => {
-                state.todosLoadingStatus = "loading"
+                state.todosLoadingStatus = "loading";
             })
             .addCase(fetchUserTodos.fulfilled, (state, action) => {
                 state.todos = action.payload;
-                state.todosLoadingStatus = "idle"
+                state.todosLoadingStatus = "idle";
             })
             .addCase(fetchUserTodos.rejected, (state) => {
-                state.todosLoadingStatus = "error"
+                state.todosLoadingStatus = "error";
             })
     }
 })
 
 export const todosReducer = userTodosSlice.reducer;
 
-export const {addTodo, deleteTodo, makeCompleted, editTodo, selectTodosFilter} = userTodosSlice.actions;
+export const {
+    addTodo, 
+    deleteTodo, 
+    makeCompleted, 
+    editTodo, 
+    selectTodosFilter,
+    setSearchQuery
+} = userTodosSlice.actions;

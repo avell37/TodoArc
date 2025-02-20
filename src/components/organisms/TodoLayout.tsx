@@ -1,53 +1,35 @@
-import { TodoStatistics } from "../molecules/TodoStatistics";
-import { Todo } from "../atoms/Todo"
-import { fetchUserTodos } from "../../store/reducers/userTodosSlice/userTodosSlice";
+import { useEffect, FC } from "react";
 import Cookies from 'js-cookie';
-import { useEffect } from "react";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { deleteUserTodo, editUserTodo, toggleUserTodoCompleted } from "../../api/todosApi";
+import { makeCompleted } from "../../store/reducers/userTodosSlice/userTodosSlice";
+import { deleteTodo, editTodo, fetchUserTodos } from "../../store/reducers/userTodosSlice/userTodosSlice";
 import { fetchUsers } from "../../store/reducers/userAuthSlice/userAuthSlice";
+import { TodoStatistics } from "../molecules/TodoStatistics";
+import { Todo } from "../atoms/Todo"
 import { Spinner } from "../../assets/Spinner";
 import { Clipboard } from "../molecules/Clipboard";
 import { P } from "../atoms/P";
 import { Error } from "../../assets/Error";
-import { deleteTodo, editTodo } from "../../store/reducers/userTodosSlice/userTodosSlice";
-import { deleteUserTodo, editUserTodo, toggleUserTodoCompleted } from "../../api/todosApi";
-import { makeCompleted } from "../../store/reducers/userTodosSlice/userTodosSlice";
 import { ITodos } from "../../models/ITodos";
 
-export const TodoLayout = () => {
+export const TodoLayout: FC = () => {
 
     const userID = Cookies.get("userID") ?? "";
     const dispatch = useAppDispatch();
-    const userTodos: ITodos[] = useAppSelector((state) => state.todosReducer.todos);
+    
+    const userTodos = useAppSelector((state) => state.todosReducer.todos);
     const todosLoadingStatus = useAppSelector((state) => state.todosReducer.todosLoadingStatus);
     const todoFilter = useAppSelector((state) => state.todosReducer.todosFilter);
+    const searchValue = useAppSelector((state) => state.todosReducer.searchValue);
 
     useEffect(() => {
-        const fetchTodos = async () => {
-            try {
-                dispatch(fetchUserTodos(userID))
-                dispatch(fetchUsers());
-            } catch (err) {
-                console.error(err);
-            }
-        }
+        dispatch(fetchUserTodos(userID))
+        dispatch(fetchUsers());
+    }, [dispatch, userID]);
 
-        fetchTodos();
-    }, [dispatch, userID])
-
-    if (todosLoadingStatus === 'loading') {
-        return <Spinner />
-    } else if (todosLoadingStatus === 'error') {
-        return (
-            <div className="flex flex-col justify-center items-center text-center gap-[20px] max-w-[210px]">
-                <Error />
-                <P className="text-white" text="Что-то пошло не так... Перезагрузи страницу :)" />
-            </div>
-        )
-    }
-
-    const onDelete = (id: string) => {
+    const handleDelete = (id: string) => {
         try {
             deleteUserTodo(userID, id);
             dispatch(deleteTodo(id));
@@ -56,9 +38,9 @@ export const TodoLayout = () => {
         }
     }
 
-    const onToggle = async (id: string) => {
+    const handleToggle = async (id: string) => {
         try {
-            const todo = userTodos.find((todo: ITodos) => todo.id === id);
+            const todo = userTodos.find(todo => todo.id === id);
             if (todo) {
                 await toggleUserTodoCompleted(userID, id);
                 dispatch(makeCompleted(id));
@@ -68,46 +50,74 @@ export const TodoLayout = () => {
         }
     }
 
-    const onEdit = async (id: string, newTitle: string) => {
+    const handleEdit = async (id: string, newTitle: string) => {
         try {
-            const todo = userTodos.find((todo: ITodos) => todo.id === id);
+            const todo = userTodos.find(todo => todo.id === id);
             if (todo) {
-                const updatedTodo = { ...todo, title: newTitle};
-                await editUserTodo(userID, updatedTodo)
-                dispatch(editTodo({id, title: newTitle}))
+                const updatedTodo: ITodos = { ...todo, title: newTitle ?? ""};
+                await editUserTodo(userID, updatedTodo);
+                dispatch(editTodo({ id, title: newTitle }))
             }
         } catch (err) {
             console.error(err);
         }
     }
 
-    const searchAndFilterTodos = (todoFilter, userData) => {
+    const searchAndFilterTodos = (filter: string, searchQuery: string, todos: ITodos[]): ITodos[] => {
+        let filteredTodos = todos;
 
-    }
-
-    const renderTodos = (arr: ITodos[]) => {
-        if (arr.length === 0) {
-            return <Clipboard />
+        if (searchQuery) {
+            filteredTodos = filteredTodos.filter(todo => todo.title?.toLowerCase().includes(searchQuery.toLowerCase()));
         }
 
-        return arr.map((todo: ITodos) => {
+        switch (filter) {
+            case "completed":
+                return filteredTodos.filter(todo => todo.completed);
+            case "title":
+                return [...filteredTodos].sort((a, b) => (a.title ?? "").localeCompare(b.title ?? ""));
+            case "date":
+                return [...filteredTodos].sort((a, b) => new Date(a.date ?? "").getTime() - new Date(b.date ?? "").getTime());
+            default:
+                return filteredTodos;
+        }
+    }
+
+    const renderTodos = (todos: ITodos[]) => {
+        if (!todos.length) return <Clipboard />;
+
+        return todos.map((todo) => {
             return (
-                <Todo 
-                key={todo.id} 
-                {...todo} 
-                onDelete={() => onDelete(todo.id)}
-                onToggle={() => onToggle(todo.id)}
-                onEdit={onEdit}
+                <Todo
+                    key={todo.id} 
+                    {...todo}
+                    onDelete={() => handleDelete(todo.id)}
+                    onToggle={() => handleToggle(todo.id)}
+                    onEdit={handleEdit}
                 />
             )
         })
     }
-    const elements = renderTodos(userTodos);
+
+    if (todosLoadingStatus === 'loading') {
+        return <Spinner />
+    }
+
+    if (todosLoadingStatus === 'error') {
+        return (
+            <div className="flex flex-col justify-center items-center text-center gap-[20px] max-w-[210px]">
+                <Error />
+                <P className="text-white" text="Что-то пошло не так... Перезагрузи страницу :)" />
+            </div>
+        )
+    }
+
+    const filteredTodos = searchAndFilterTodos(todoFilter, searchValue, userTodos);
+    const todoElements = renderTodos(filteredTodos);
 
     return (
         <div className="w-full flex flex-col justify-center items-center gap-[12px] pb-[70px]">
             <TodoStatistics />
-            {elements}
+            {todoElements}
         </div>
     )
 };

@@ -1,12 +1,12 @@
-import { Button } from "../atoms/Button"
-import { Input } from "../atoms/Input"
-import { useState } from "react";
+import { useState, FC } from "react";
 import { nanoid } from "nanoid";
-import { FormateDate } from "../../features/FormateDate/FormateDate";
 import { addTodo } from "../../store/reducers/userTodosSlice/userTodosSlice";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { FormateDate } from "../../features/FormateDate/FormateDate";
+import { Button } from "../atoms/Button"
+import { Input } from "../atoms/Input"
 
-export const AddTodo: React.FC = () => {
+export const AddTodo: FC = () => {
 
     const [value, setValue] = useState('');
     const dispatch = useAppDispatch();
@@ -38,7 +38,7 @@ export const AddTodo: React.FC = () => {
                 className="max-w-[700px] w-full text-white bg-gray-400 p-[10px] rounded-md transition duration-200 hover:bg-gray-500" />
             <Button
                 className="max-w-[165px] w-full bg-darkblue-400 p-[10px] rounded-md text-white transition duration-200 hover:bg-darkblue-500"
-                text="Создать" />
+                children="Создать" />
         </form>
     )
 }

@@ -1,4 +1,6 @@
-interface IProps {
+import { FC } from "react"
+
+interface InputProps {
     name?: string,
     type?: string,
     placeholder?: string,
@@ -12,7 +14,7 @@ interface IProps {
     disabled?: boolean,
 }
 
-export const Input: React.FC<IProps> = 
+export const Input: FC<InputProps> = 
 ({ name, type, placeholder, value, className, required, onChange, onKeyDown }) => {
     return (
         <input

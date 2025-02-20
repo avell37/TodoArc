@@ -1,9 +1,10 @@
+import { FC } from "react"
+import { Link } from "react-router-dom"
 import { TodoArcLogo } from "../../../assets/TodoArcLogo"
 import { Button } from "../../atoms/Button"
 import { P } from "../../atoms/P"
-import { Link } from "react-router-dom"
 
-export const WelcomePage: React.FC = () => {
+export const WelcomePage: FC = () => {
     return (
         <div className="flex flex-col justify-center items-center h-screen bg-[#0D0D0D]">
             <TodoArcLogo
@@ -20,12 +21,12 @@ export const WelcomePage: React.FC = () => {
             <div className="flex max-w-[400px] w-full gap-[20px]">
                 <Link to="/signin" className="max-w-[243px] w-full">
                     <Button
-                        text='Регистрация'
+                        children='Регистрация'
                         className="bg-darkblue-400 w-full h-[40px] rounded-md text-white font-semibold transition duration-200 hover:bg-darkblue-500" />
                 </Link>
                 <Link to="/login" className="max-w-[243px] w-full">
                     <Button
-                        text='Войти'
+                        children='Войти'
                         className="bg-darkpurple-400 w-full h-[40px] rounded-md text-white font-semibold transition duration-200 hover:bg-darkpurple-500" />
                 </Link>
             </div>

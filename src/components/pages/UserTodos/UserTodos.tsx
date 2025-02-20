@@ -1,11 +1,11 @@
+import { FC } from "react"
 import { Header } from "../../organisms/Header"
 import { AddTodo } from "../../molecules/AddTodo"
 import { TodoLayout } from "../../organisms/TodoLayout"
 import { Footer } from "../../organisms/Footer"
 import { SearchTodo } from "../../molecules/SearchTodo"
 
-export const UserTodos: React.FC = () => {
-
+export const UserTodos: FC = () => {
     return (
         <div className="relative flex flex-col min-h-screen">
             <Header />

@@ -1,21 +1,21 @@
-import { CustomInput } from "../../../features/CustomInput/CustomInput";
-import { Button } from "../../atoms/Button"
-import { P } from "../../atoms/P"
-import { TodoArcLogo } from "../../../assets/TodoArcLogo"
+import { useEffect, useState, FC } from "react";
+import Cookies from 'js-cookie'
 import { Formik } from 'formik';
-import { RegValidationSchema } from "../../../features/ValidationSchema/ValidationSchema";
-import { Link } from "react-router-dom"
 import { nanoid } from "nanoid";
+import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../hooks/useAppSelector";
 import { useAppDispatch } from "../../../hooks/useAppDispatch";
 import { createUser, getUsers } from '../../../api/userApi'
 import { regUser } from "../../../store/reducers/userAuthSlice/userAuthSlice";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Cookies from 'js-cookie'
+import { Link } from "react-router-dom"
+import { RegValidationSchema } from "../../../features/ValidationSchema/ValidationSchema";
+import { CustomInput } from "../../../features/CustomInput/CustomInput";
+import { Button } from "../../atoms/Button"
+import { P } from "../../atoms/P"
+import { TodoArcLogo } from "../../../assets/TodoArcLogo"
 import { IUser } from "../../../models/IUser";
 
-export const Registration: React.FC = () => {
+export const Registration: FC = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const Registration: React.FC = () => {
     useEffect(() => {
         const isAuthCookie = Cookies.get("isAuth") === "true";
     
-        if (isAuth || isAuthCookie) {
+        if (isAuth && isAuthCookie) {
             navigate('/todos');
         }
     }, [isAuth, navigate]);
@@ -51,9 +51,9 @@ export const Registration: React.FC = () => {
                     }
                         try {
                             const res = await getUsers();
-                            const users = res?.data;
-                            const isUsernameTaken = users.some((user: IUser) => user.username === values.username);
-                            const isEmailTaken = users.some((user: IUser) => user.email === values.email)
+                            const users: IUser[] = res?.data;
+                            const isUsernameTaken = users.some(user => user.username === values.username);
+                            const isEmailTaken = users.some(user => user.email === values.email)
                             if (isUsernameTaken || isEmailTaken) {
                                 setError(isUsernameTaken ? "Этот логин уже занят" : "Эта почта уже занята")
                             } else {
@@ -103,7 +103,7 @@ export const Registration: React.FC = () => {
                         {error && <P text={error} className="text-red-500 text-center"/>}
                         <Button
                             type='submit'
-                            text='Зарегистрироваться'
+                            children='Зарегистрироваться'
                             className="bg-darkblue-400 max-w-[243px] w-full h-[40px] rounded-3xl text-white font-semibold transition duration-200 hover:bg-darkblue-500"
                         />
                     </div>

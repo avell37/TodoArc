@@ -1,8 +1,9 @@
-import { P } from "../atoms/P"
+import { FC } from "react";
 import { useAppSelector } from "../../hooks/useAppSelector"
+import { P } from "../atoms/P"
 import { ITodos } from "../../models/ITodos";
 
-export const TodoStatistics: React.FC = () => {
+export const TodoStatistics: FC = () => {
 
     const userTodos: ITodos[] = useAppSelector((state) => state.todosReducer.todos);
     const completedTodos = userTodos.filter((todo) => todo.completed === true).length;

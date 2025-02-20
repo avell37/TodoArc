@@ -1,27 +1,38 @@
+import { useState, FC } from "react";
+import Select, {SingleValue, StylesConfig} from 'react-select';
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { selectTodosFilter, setSearchQuery } from "../../store/reducers/userTodosSlice/userTodosSlice";
 import { Input } from "../atoms/Input"
 import { SearchIcon } from "../../assets/SearchIcon"
-import Select from 'react-select';
-import { useAppDispatch } from "../../hooks/useAppDispatch";
-import { selectTodosFilter } from "../../store/reducers/userTodosSlice/userTodosSlice";
-import { useState } from "react";
 
 interface OptionType {
     value: string,
     label: string
 }
 
-export const SearchTodo = () => {
+export const SearchTodo: FC = () => {
 
     const dispatch = useAppDispatch();
-    const [selectedOption, setSelectedOption] = useState(null);
+    const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
+    const [searchValue, setSearchValue] = useState<string>('');
 
-    const handleChange = (newValue: SingleValue<OptionType | null>) => {
-        dispatch(selectTodosFilter(newValue.value))
-        setSelectedOption(newValue.label);
+    const handleFiltersChange = (newValue: SingleValue<OptionType | null>) => {
+        if (newValue) {
+            dispatch(selectTodosFilter(newValue.value))
+            setSelectedOption(newValue);
+        } else {
+            dispatch(selectTodosFilter("nothing"));
+            setSelectedOption(null);
+        }
+    }
+    
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(e.target.value);
+        dispatch(setSearchQuery(e.target.value));
     }
 
-    const customStyles = {
-        control: (base: any) => ({
+    const customStyles: StylesConfig<OptionType, false> = {
+        control: (base) => ({
             ...base,
             backgroundColor: "#333333",
             borderColor: "none",
@@ -32,27 +43,24 @@ export const SearchTodo = () => {
                 backgroundColor: "#262626"
             }
         }),
-        menu: (provided: any) => ({
+        menu: (provided) => ({
             ...provided,
             backgroundColor: "#333333"
         }),
-        option: (provided: any, state: any) => ({
+        option: (provided, state) => ({
             ...provided,
-            backgroundColor: "#333333",
+            backgroundColor: state.isFocused ? "#808080" : "#333333",
             color: "#fff",
-            "&:hover": {
-                backgroundColor: "#808080"
-            }
         }),
-        singleValue: (provided: any) => ({
+        singleValue: (provided) => ({
             ...provided,
             color: "white",
         }),
     }
 
-    const filterOptions = [
+    const filterOptions: OptionType[] = [
         {value: "nothing", label: "Без фильтра"},
-        {value: 'likes', label: 'По лайкам'},
+        {value: 'completed', label: 'Сделанные'},
         {value: 'title', label: 'По заголовку'},
         {value: 'date', label: 'По дате'}
     ]
@@ -61,8 +69,10 @@ export const SearchTodo = () => {
         <div className="flex justify-center items-center max-w-[900px] w-full gap-[10px]">
             <div className="relative max-w-[700px] w-full">
                 <Input
-                    name="login"
+                    name="search"
                     type="text"
+                    value={searchValue}
+                    onChange={handleSearchChange}
                     placeholder="Поиск"
                     className="max-w-[700px] w-full text-white bg-gray-400 p-[10px] rounded-md transition duration-200 hover:bg-gray-500" />
                 <SearchIcon className="absolute right-2 top-1/2 transform -translate-y-1/2" />
@@ -71,7 +81,7 @@ export const SearchTodo = () => {
                 styles={customStyles}
                 defaultValue={selectedOption}
                 placeholder="Фильтры"
-                onChange={handleChange}
+                onChange={handleFiltersChange}
                 options={filterOptions} />
         </div>
     )

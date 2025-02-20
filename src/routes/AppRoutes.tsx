@@ -8,19 +8,23 @@ export const AppRoutes: React.FC = () => {
     const isAuth = useAppSelector(state => state.userReducer.isAuth);
     const isAuthCookie = Cookies.get('isAuth')
 
-    return isAuth || isAuthCookie ? (
+    return (
         <Routes>
-            {privateRoutes.map((route) => (
-                <Route key={route.path} path={route.path} element={<route.element />} />
-            ))}
-            <Route path="/*" element={<Navigate to="/todos" />} />
-        </Routes>
-    ) : (
-        <Routes>
-            {publicRoutes.map((route) => (
-                <Route key={route.path} path={route.path} element={<route.element />} />
-            ))}
-            <Route path="/*" element={<Navigate to="/" />} />
+            {isAuth || isAuthCookie ? (
+                <>
+                    {privateRoutes.map((route) => (
+                        <Route key={route.path} path={route.path} element={<route.element />} />
+                    ))}
+                    <Route path="/*" element={<Navigate to="/todos" />} />
+                </>
+            ) : (
+                <>
+                    {publicRoutes.map((route) => (
+                    <Route key={route.path} path={route.path} element={<route.element />} />
+                    ))}
+                    <Route path="/*" element={<Navigate to="/" />} />
+                </>
+            )}
         </Routes>
     )
 }
