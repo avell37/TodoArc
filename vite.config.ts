@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: '/TodoArc',
+  base: '/',
   plugins: [react(), tailwindcss()],
   optimizeDeps: {
     include: ['react-select'],
