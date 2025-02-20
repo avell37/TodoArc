@@ -14,6 +14,8 @@ export const AddTodo: FC = () => {
     const createTodo = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        if (value.length <= 0) return;
+
         const newTodo = {
             id: nanoid(),
             title: value,
@@ -27,8 +29,8 @@ export const AddTodo: FC = () => {
 
     return (
         <form
-        onSubmit={(e) => createTodo(e)}
-        className="relative flex justify-center items-center max-w-[900px] w-full pt-[20px] pb-[50px] gap-[10px] max-[300px]:flex-col">
+            onSubmit={(e) => createTodo(e)}
+            className="relative flex justify-center items-center max-w-[900px] w-full pt-[20px] pb-[50px] gap-[10px] max-[300px]:flex-col">
             <Input
                 name="login"
                 type="text"

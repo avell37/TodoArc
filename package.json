@@ -3,12 +3,14 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://avell37.github.io/TodoArc",
   "scripts": {
     "dev": "concurrently \"vite\" \"npx json-server --watch db.json --port 3001\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start-server": "node server.js"
+    "start-server": "node server.js",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",
@@ -37,6 +39,7 @@
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
+    "gh-pages": "6.3.0",
     "globals": "^15.14.0",
     "json-server": "^0.17.0",
     "tailwindcss": "^4.0.0",

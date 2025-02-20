@@ -7,7 +7,7 @@ import { store } from './store/store'
 
 createRoot(document.getElementById('root')!).render(
   <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <AppRoutes />
     </BrowserRouter>
   </Provider>
