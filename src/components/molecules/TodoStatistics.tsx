@@ -10,7 +10,7 @@ export const TodoStatistics: FC = () => {
     const totalTodos = userTodos.length;
 
     return (
-        <div className='max-w-[866px] w-full flex justify-between items-center mb-[25px]'>
+        <div className='max-w-[866px] w-full flex justify-between items-center mb-[25px] max-[370px]:flex-col max-[370px]:gap-[20px]'>
             <P text={
                 <span className="flex min-w-[200px]">
                     Количество задач <span className="flex items-center justify-center max-w-[25px] w-full h-[25px] bg-gray-400 rounded-[50%] text-white text-[14px] ml-[10px]">{totalTodos}</span>

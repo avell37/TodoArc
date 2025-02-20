@@ -29,12 +29,12 @@ export const Account: FC = () => {
         <div className="flex flex-col justify-between min-h-screen h-full">
             <Header />
             <div className="flex justify-center h-[200px] mb-[390px]">
-                <div className="max-w-[700px] w-full flex justify-start bg-gray-500 p-[20px] rounded-md min-h-[270px] h-full max-sm:flex-col max-sm: items-center">
+                <div className="max-w-[700px] w-full flex justify-start bg-gray-500 p-[20px] rounded-md min-h-[270px] h-full max-sm:flex-col max-sm:items-center max-md:max-w-[500px] max-md:min-h-[400px] max-md:justify-around max-[300px]:mt-[30px]">
                     <ProfileIcon
-                        width={200}
-                        height={200}
-                        className="max-w-[200px] w-full max-sm:h-[100px]" />
-                    <div className="flex flex-col mt-[20px] ml-[30px] gap-[20px] max-sm:gap-[10px] w-full">
+                        width="200px"
+                        height="200px"
+                        className="max-w-[200px] w-full min-sm:h-[200px] max-md:h-[100px]" />
+                    <div className="flex flex-col mt-[20px] ml-[30px] gap-[20px] w-full max-md:gap-[10px]">
                         <h1 className="text-white font-bold">Ваш аккаунт</h1>
                         <P className="text-white" text={`Ваше имя: ${userData?.username || ""}`} />
                         <P className="text-white" text={`Ваша почта: ${userData?.email || ""}`} />

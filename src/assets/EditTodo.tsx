@@ -1,4 +1,4 @@
-export const EditTodo = () => {
+export const EditTodo: React.FC = () => {
     return (
         <svg fill="#808080" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
             width="16px" height="16px" viewBox="0 0 494.936 494.936" xmlSpace="preserve" className="absolute right-12 top-5 cursor-pointer">

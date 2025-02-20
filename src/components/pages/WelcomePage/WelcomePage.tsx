@@ -8,7 +8,7 @@ export const WelcomePage: FC = () => {
     return (
         <div className="flex flex-col justify-center items-center h-screen bg-[#0D0D0D]">
             <TodoArcLogo
-                className="max-h-[220px] max-w-[400px] w-full h-full mt-[25px]"
+                className="max-h-[220px] max-w-[400px] w-full h-full mt-[25px] max-[300px]:max-w-[200px]"
                 viewBox="50 150 420 220" />
             <div className="flex flex-col justify-center items-center">
                 <P
@@ -18,7 +18,7 @@ export const WelcomePage: FC = () => {
                     text="Ну что, начнём?"
                     className="text-white font-bold mt-[20px] mb-[10px] text-[18px]" />
             </div>
-            <div className="flex max-w-[400px] w-full gap-[20px]">
+            <div className="flex max-w-[400px] w-full gap-[20px] max-[300px]:flex-col max-[300px]:items-center">
                 <Link to="/signin" className="max-w-[243px] w-full">
                     <Button
                         children='Регистрация'
