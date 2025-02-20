@@ -1,27 +1,16 @@
+import { FC } from "react"
 import { Header } from "../../organisms/Header"
 import { AddTodo } from "../../molecules/AddTodo"
 import { TodoLayout } from "../../organisms/TodoLayout"
-import { getUsers } from "../../../api"
-import { useCallback } from "react"
 import { Footer } from "../../organisms/Footer"
+import { SearchTodo } from "../../molecules/SearchTodo"
 
-export const UserTodos: React.FC = () => {
-
-    const fetchUsers = useCallback(async () => {
-        try {
-            const response = await getUsers();
-            console.log(response)
-        } catch (err) {
-            console.error(err);
-        }
-    }, [])
-
-    fetchUsers();
-
+export const UserTodos: FC = () => {
     return (
-        <div className="flex flex-col justify-between h-screen">
+        <div className="relative flex flex-col min-h-screen">
             <Header />
-            <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-1 flex-col justify-start items-center">
+                <SearchTodo />
                 <AddTodo />
                 <TodoLayout />
             </div>

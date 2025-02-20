@@ -1,4 +1,9 @@
-export const TodoArcLogo = ({ className, viewBox }: { className: string, viewBox: string }) => {
+interface TodoArcProps {
+    className?: string,
+    viewBox?: string
+}
+
+export const TodoArcLogo: React.FC<TodoArcProps> = ({ className, viewBox }) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox={viewBox} className={className}>
             <path d="M 220.92 208.03 C 231.62 192.66 242.38 177.33 253.15 162.00 C 264.81 178.69 276.01 195.70 287.40 212.57 C 289.06 215.13 291.07 217.92 290.32 221.16 C 289.10 224.37 286.33 226.59 284.22 229.19 C 279.78 233.66 279.29 240.28 277.00 245.87 C 275.19 250.17 274.90 255.38 271.33 258.74 C 270.68 258.39 269.40 257.67 268.75 257.32 C 265.42 248.98 262.18 240.60 259.19 232.13 C 254.76 228.58 249.26 226.30 245.42 222.07 C 245.34 215.90 254.36 213.57 253.82 207.06 C 253.73 196.57 254.14 186.07 253.64 175.59 C 240.81 190.22 228.73 205.50 216.48 220.63 C 215.85 220.63 214.59 220.62 213.96 220.61 C 214.54 215.65 218.29 212.02 220.92 208.03 Z" fill="#fbfbfa" opacity="1.00" stroke="#fbfbfa" />

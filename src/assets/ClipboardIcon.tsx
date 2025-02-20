@@ -1,4 +1,10 @@
-export const ClipboardIcon = ({ width, height, fill }: { width: number, height: number, fill: string }) => {
+interface ClipboardProps {
+    width: string,
+    height: string,
+    fill: string,
+}
+
+export const ClipboardIcon: React.FC<ClipboardProps> = ({ width, height, fill }) => {
     return (
         <svg width={width} height={height} viewBox="0 0 32 32" data-name="Layer 1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" fill={fill}>
             <path className="cls-1" d="M25,7H23.82A3,3,0,0,0,21,5H20a3,3,0,0,0-3-3H15a3,3,0,0,0-3,3H11A3,3,0,0,0,8.18,7H7A2,2,0,0,0,5,9V28a2,2,0,0,0,2,2H25a2,2,0,0,0,2-2V9A2,2,0,0,0,25,7ZM11,7h1a2,2,0,0,0,2-2,1,1,0,0,1,1-1h2a1,1,0,0,1,1,1,2,2,0,0,0,2,2h1a1,1,0,0,1,1,1V9H10V8A1,1,0,0,1,11,7ZM25,28H7V9H8a2,2,0,0,0,2,2H22a2,2,0,0,0,2-2h1Z" />
