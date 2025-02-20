@@ -10,9 +10,9 @@ export const Clipboard: FC = () => {
                 width="75px"
                 height="75px"
                 fill="#262626" />
-            <P className="text-gray-300 font-bold" 
+            <P className="text-gray-300 font-bold text-center" 
                 text="Пока что ваш список пуст..." />
-            <P className="text-gray-300 font-medium" 
+            <P className="text-gray-300 font-medium text-center"  
                 text="Введите вашу цель, а затем добавьте ее, тогда она отобразится тут :3" />
         </div>
     )

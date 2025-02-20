@@ -43,7 +43,7 @@ export const Todo: FC<TodoProps> = ({id, title, date, completed, onDelete, onTog
                 </div>
                 {isEditing ? (
                     <form 
-                    className='flex gap-[10px] items-center'
+                    className='flex items-center gap-[10px] max-w-[500px] max-[620px]:max-w-[400px] max-[500px]:max-w-[300px] max-[400px]:max-w-[200px] max-[300px]:max-w-[100px]'
                     onSubmit={handleSave}>
                         <Input
                         type="text"
@@ -68,7 +68,7 @@ export const Todo: FC<TodoProps> = ({id, title, date, completed, onDelete, onTog
                 </div>
                 {isEditing ? (
                     <form 
-                    className='flex gap-[10px]'
+                    className='flex items-center gap-[10px] max-w-[500px] max-[620px]:max-w-[400px] max-[500px]:max-w-[300px] max-[400px]:max-w-[200px] max-[300px]:max-w-[100px]'
                     onSubmit={handleSave}>
                         <Input
                         type="text"
